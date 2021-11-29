@@ -252,9 +252,9 @@ Public Class MainForm
                         .cupDate = String.Format("{0:yyyy-MM-dd}", DateS)
                     }
 
-                    'Dim thread As New Thread(AddressOf CheckFacility)
-                    'thread.Start(checkParams)
-                    CheckFacility(checkParams)
+                    Dim thread As New Thread(AddressOf CheckFacility)
+                    thread.Start(checkParams)
+                    'CheckFacility(checkParams)
 
 
                 Next
@@ -442,7 +442,6 @@ Public Class MainForm
             response.Close()
             response.Dispose()
 
-            Console.WriteLine(content)
             Dim data As JObject = JObject.Parse(content)
             Dim list As JArray = data.Value(Of JArray)("appointmentsList")
 
@@ -464,8 +463,6 @@ Public Class MainForm
 
             Console.WriteLine("Failed checking facility " + params.FacilityCode)
             Console.WriteLine(ex)
-
-
 
         End Try
 
