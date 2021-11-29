@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Globalization
+Imports System.IO
 Imports System.Net
 Imports System.Net.Cache
 Imports System.Threading
@@ -197,6 +198,22 @@ Public Class MainForm
         SearchProgress.Minimum = 0
         SearchProgress.Value = 0
 
+        Dim DateS = DateTime.Now
+        If (RadioButton3.Checked) Then
+            Try
+                DateS = DateTime.ParseExact(endDate.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                DateS = DateS.AddDays(150)
+
+            Catch ex As Exception
+                MessageBox.Show("Data non valida",
+                "Data non valida",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+                )
+                Return
+            End Try
+        End If
+
         For Each province In Provinces
 
             If province.Enabled Then SearchProgress.Maximum += province.Facilities.Count
@@ -214,6 +231,10 @@ Public Class MainForm
             CBLecce.Enabled = False
             CBTaranto.Enabled = False
 
+            RadioButton1.Enabled = False
+            RadioButton3.Enabled = False
+            endDate.Enabled = False
+
             For Each province In Provinces
 
                 If Not province.Enabled Then Continue For
@@ -222,11 +243,14 @@ Public Class MainForm
 
                     Dim checkParams As New CheckParams With {
                         .Province = province,
-                        .FacilityCode = facility
+                        .FacilityCode = facility,
+                        .cupDate = String.Format("{0:yyyy-MM-dd}", DateS)
                     }
 
-                    Dim thread As New Thread(AddressOf CheckFacility)
-                    thread.Start(checkParams)
+                    'Dim thread As New Thread(AddressOf CheckFacility)
+                    'thread.Start(checkParams)
+                    CheckFacility(checkParams)
+
 
                 Next
 
@@ -381,7 +405,8 @@ Public Class MainForm
         url += "deliveryType" + "=" + params.Province.DeliveryType + "&"
         url += "companyCodes" + "=" + params.Province.CompanyCode + "&"
         url += "facilityCode" + "=" + params.FacilityCode + "&"
-        url += "cupDate" + "=" + "2021-06-12" + "&"
+        url += "cupDate" + "=" + params.cupDate + "&"
+        url += "dose" + "=" + If(RadioButton3.Checked, "3", "1") + "&"
         url += "isFragile" + "=" + "false" + "&"
         url += "healthInsuranceCard" + "=" + HealthCardID.Text + "&"
         url += "platform" + "=" + "WEB" + "&"
@@ -412,6 +437,7 @@ Public Class MainForm
             response.Close()
             response.Dispose()
 
+            Console.WriteLine(content)
             Dim data As JObject = JObject.Parse(content)
             Dim list As JArray = data.Value(Of JArray)("appointmentsList")
 
@@ -432,6 +458,9 @@ Public Class MainForm
         Catch ex As Exception
 
             Console.WriteLine("Failed checking facility " + params.FacilityCode)
+            Console.WriteLine(ex)
+
+
 
         End Try
 
@@ -449,6 +478,10 @@ Public Class MainForm
                 CBFoggia.Enabled = True
                 CBLecce.Enabled = True
                 CBTaranto.Enabled = True
+
+                RadioButton1.Enabled = True
+                RadioButton3.Enabled = True
+                endDate.Enabled = RadioButton3.Checked
 
             End If
 
@@ -473,6 +506,7 @@ Public Class MainForm
 
         Public Property Province As Province
         Public Property FacilityCode As String
+        Public Property cupDate As String
 
     End Class
 
@@ -493,4 +527,7 @@ Public Class MainForm
 
     End Class
 
+    Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
+        endDate.Enabled = RadioButton3.Checked
+    End Sub
 End Class
