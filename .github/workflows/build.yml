@@ -55,10 +55,11 @@ jobs:
         name: Release
 
     - name: Zip release artifacts
-      uses: papeloto/action-zip@v1
+      uses: thedoctor0/zip-release@master
       with:
-        files: ${{ steps.download_build.outputs.download-path }}
-        dest: Release.zip
+        type: zip
+        path: ${{ steps.download_build.outputs.download-path }}
+        filename: Release.zip
 
     - name: Upload release artifacts
       uses: actions/upload-release-asset@v1
