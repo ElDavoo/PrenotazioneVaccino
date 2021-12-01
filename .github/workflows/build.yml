@@ -10,6 +10,8 @@ jobs:
 
   build:
     runs-on: windows-latest
+    strategy:
+      max-parallel: 1
 
     steps:
     - uses: actions/checkout@v2
@@ -34,6 +36,8 @@ jobs:
 
   publish:
     runs-on: windows-latest
+    strategy:
+      max-parallel: 1
 
     steps:
     - name: Create release
