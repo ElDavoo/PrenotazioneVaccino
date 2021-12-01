@@ -54,12 +54,18 @@ jobs:
       with:
         name: Release
 
-    - name: Upload release assets
+    - name: Zip release artifacts
+      uses: papeloto/action-zip@v1
+      with:
+        files: ${{ steps.download_build.outputs.download-path }}
+        dest: Release.zip
+
+    - name: Upload release artifacts
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.download_build.outputs.download-path }}
+        asset_path: Release.zip
         asset_name: Release.zip
         asset_content_type: application/zip
