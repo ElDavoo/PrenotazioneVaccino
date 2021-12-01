@@ -28,4 +28,4 @@ jobs:
       uses: actions/upload-artifact@v2.2.4
       with:
         name: Release
-        path: bin\Release
+        path: PrenotazioneVaccino\bin\Release
