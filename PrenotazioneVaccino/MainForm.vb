@@ -349,7 +349,9 @@ Public Class MainForm
             If dialog.ShowDialog = DialogResult.OK Then
 
                 Dim url As String = "https://www.sanita.puglia.it/sanita-api/covid19/reservation/"
-                url += reservationID
+                url += reservationID.Substring(0, 4)
+                url += Provinces(provinceDialog.Provincia).CompanyCode.Substring(1)
+                url += reservationID.Substring(4)
                 url += "/patient/"
                 url += FiscalCode.Text
                 url += "/company/"
