@@ -76,10 +76,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChooseProvince.Designer.vb">
-      <DependentUpon>ChooseProvince.vb</DependentUpon>
+    <Compile Include="DownloadDialog.Designer.vb">
+      <DependentUpon>DownloadDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="ChooseProvince.vb">
+    <Compile Include="DownloadDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.vb">
@@ -106,11 +106,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChooseProvince.resx">
-      <DependentUpon>ChooseProvince.vb</DependentUpon>
+    <EmbeddedResource Include="DownloadDialog.resx">
+      <DependentUpon>DownloadDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

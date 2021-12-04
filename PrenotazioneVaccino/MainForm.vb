@@ -168,6 +168,7 @@ Public Class MainForm
         CBTaranto.Tag = Provinces(5)
 
         AppointmentsList.ListViewItemSorter = New ListComparator
+        EndDate.MaxDate = Date.Now
 
     End Sub
 
@@ -206,20 +207,14 @@ Public Class MainForm
         SearchProgress.Minimum = 0
         SearchProgress.Value = 0
 
-        Dim DateS = DateTime.Now
-        If (RadioButton3.Checked) Then
-            Try
-                DateS = DateTime.ParseExact(endDate.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture)
-                DateS = DateS.AddDays(150)
+        Dim searchDate = Date.Now
+        If Dose3.Checked Then
 
-            Catch ex As Exception
-                MessageBox.Show("Data non valida",
-                "Data non valida",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error
-                )
-                Return
-            End Try
+            searchDate = EndDate.Value.AddDays(150)
+            If searchDate < Date.Now Then
+                searchDate = Date.Now
+            End If
+
         End If
 
         For Each province In Provinces
@@ -239,9 +234,12 @@ Public Class MainForm
             CBLecce.Enabled = False
             CBTaranto.Enabled = False
 
-            RadioButton1.Enabled = False
-            RadioButton3.Enabled = False
-            endDate.Enabled = False
+            FiscalCode.Enabled = False
+            HealthCardID.Enabled = False
+
+            Dose1.Enabled = False
+            Dose3.Enabled = False
+            EndDate.Enabled = False
 
             For Each province In Provinces
 
@@ -252,13 +250,11 @@ Public Class MainForm
                     Dim checkParams As New CheckParams With {
                         .Province = province,
                         .FacilityCode = facility,
-                        .cupDate = String.Format("{0:yyyy-MM-dd}", DateS)
+                        .CupDate = String.Format("{0:yyyy-MM-dd}", searchDate)
                     }
 
                     Dim thread As New Thread(AddressOf CheckFacility)
                     thread.Start(checkParams)
-                    'CheckFacility(checkParams)
-
 
                 Next
 
@@ -337,10 +333,8 @@ Public Class MainForm
 
     Private Sub Download_Click(sender As Object, e As EventArgs) Handles Download.Click
 
-        Dim reservationID As String = InputBox("Codice prenotazione")
-
-        Dim provinceDialog = New ChooseProvince()
-        If provinceDialog.ShowDialog() = DialogResult.OK Then
+        Dim downloadDialog = New DownloadDialog(FiscalCode.Text, HealthCardID.Text)
+        If downloadDialog.ShowDialog() = DialogResult.OK Then
 
             Dim dialog As New SaveFileDialog With {
                 .Filter = "PDF|*.pdf"
@@ -348,16 +342,19 @@ Public Class MainForm
 
             If dialog.ShowDialog = DialogResult.OK Then
 
+                Dim reservationID As String = downloadDialog.ReservationID
+                Dim province As Province = Provinces(downloadDialog.Province)
+
                 Dim url As String = "https://www.sanita.puglia.it/sanita-api/covid19/reservation/"
                 url += reservationID.Substring(0, 4)
-                url += Provinces(provinceDialog.Provincia).CompanyCode.Substring(1)
+                url += province.CompanyCode.Substring(1)
                 url += reservationID.Substring(4)
                 url += "/patient/"
-                url += FiscalCode.Text
+                url += downloadDialog.FiscalCode
                 url += "/company/"
-                url += Provinces(provinceDialog.Provincia).CompanyCode
+                url += province.CompanyCode
                 url += "/download-reminder?platform=WEB&functionality=GESTIONE_PRENOTAZIONI&accessMode=ANONIMO&healthInsuranceCard="
-                url += HealthCardID.Text
+                url += downloadDialog.HealthCardID
 
                 Dim request As HttpWebRequest = WebRequest.Create(url)
 
@@ -415,8 +412,8 @@ Public Class MainForm
         url += "deliveryType" + "=" + params.Province.DeliveryType + "&"
         url += "companyCodes" + "=" + params.Province.CompanyCode + "&"
         url += "facilityCode" + "=" + params.FacilityCode + "&"
-        url += "cupDate" + "=" + params.cupDate + "&"
-        url += "dose" + "=" + If(RadioButton3.Checked, "3", "1") + "&"
+        url += "cupDate" + "=" + params.CupDate + "&"
+        url += "dose" + "=" + If(Dose3.Checked, "3", "1") + "&"
         url += "isFragile" + "=" + "false" + "&"
         url += "healthInsuranceCard" + "=" + HealthCardID.Text + "&"
         url += "platform" + "=" + "WEB" + "&"
@@ -486,9 +483,12 @@ Public Class MainForm
                 CBLecce.Enabled = True
                 CBTaranto.Enabled = True
 
-                RadioButton1.Enabled = True
-                RadioButton3.Enabled = True
-                endDate.Enabled = RadioButton3.Checked
+                FiscalCode.Enabled = True
+                HealthCardID.Enabled = True
+
+                Dose1.Enabled = True
+                Dose3.Enabled = True
+                EndDate.Enabled = Dose3.Checked
 
             End If
 
@@ -513,7 +513,7 @@ Public Class MainForm
 
         Public Property Province As Province
         Public Property FacilityCode As String
-        Public Property cupDate As String
+        Public Property CupDate As String
 
     End Class
 
@@ -534,7 +534,8 @@ Public Class MainForm
 
     End Class
 
-    Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
-        endDate.Enabled = RadioButton3.Checked
+    Private Sub Dose3_CheckedChanged(sender As Object, e As EventArgs) Handles Dose3.CheckedChanged
+        EndDate.Enabled = Dose3.Checked
     End Sub
+
 End Class
