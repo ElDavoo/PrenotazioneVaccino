@@ -3,11 +3,13 @@
 ## Disclaimer
 Questo programma funziona solo col **portale della regione Puglia.**  
 Lo sviluppo di questo programma non è autorizzato, supportato o correlato al portale ufficiale della regione Puglia, né all'azienda che lo ha sviluppato.  
+## A cosa serve
+Il programma permette di prenotare il vaccino COVID-19 negli hub pugliesi.
 ## Cosa fa
 Bypassa la coda ;)  
 Cerca la prima prenotazione disponibile in tutti gli hub delle province scelte;  
 *(Supporta sia la prima che la terza dose!)*  
-Effettua la prenotazione al vaccino all'hub selezionato;  
+Effettua la prenotazione al vaccino  covid-19 all'hub selezionato;  
 Scarica una prenotazione, conoscendo numero prenotazione e provincia prenotazione.  
 
 ## Cosa NON fa
