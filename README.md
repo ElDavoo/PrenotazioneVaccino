@@ -13,6 +13,8 @@ Effettua la prenotazione al vaccino  covid-19 all'hub selezionato;
 Scarica una prenotazione, conoscendo numero prenotazione e provincia prenotazione.  
 
 ## Cosa NON fa
+Puoi prenotare solo il primo appuntamento disponibili.
+Non puoi scegliere la data minima.
 Non prenota se sei già prenotato.  
 Non puoi disdire prenotazioni.  
 Non sanifica l'input: Inserite i dati correttamente.  
