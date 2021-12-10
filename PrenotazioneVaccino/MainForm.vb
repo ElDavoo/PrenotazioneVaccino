@@ -1,7 +1,7 @@
-﻿Imports System.Globalization
-Imports System.IO
+﻿Imports System.IO
 Imports System.Net
 Imports System.Net.Cache
+Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports Newtonsoft.Json.Linq
 
@@ -17,138 +17,144 @@ Public Class MainForm
         HttpWebRequest.DefaultCachePolicy = policy
 
         Dim Bari As New Province With {
+            .Name = "Bari",
             .CompanyCode = "C160114",
             .DeliveryType = "SSN"
         }
 
-        'Bari.Facilities.Add("14332")
-        Bari.Facilities.Add("14334")
-        Bari.Facilities.Add("14362")
-        Bari.Facilities.Add("14450")
-        'Bari.Facilities.Add("14397")
-        'Bari.Facilities.Add("14455")
-        Bari.Facilities.Add("14487")
-        Bari.Facilities.Add("14383")
-        Bari.Facilities.Add("14354")
-        Bari.Facilities.Add("14379")
-        Bari.Facilities.Add("14373")
-        'Bari.Facilities.Add("14375")
-        'Bari.Facilities.Add("14480")
-        Bari.Facilities.Add("14336")
-        Bari.Facilities.Add("14377")
-        Bari.Facilities.Add("14385")
-        Bari.Facilities.Add("14499")
-        Bari.Facilities.Add("14340")
-        Bari.Facilities.Add("14419")
-        Bari.Facilities.Add("14421")
-        'Bari.Facilities.Add("14501")
-        Bari.Facilities.Add("14367")
-        Bari.Facilities.Add("14426")
-        Bari.Facilities.Add("14381")
-        Bari.Facilities.Add("14371")
-        Bari.Facilities.Add("14463")
-        Bari.Facilities.Add("14358")
+        ''Bari.Facilities.Add("14332")
+        'Bari.Facilities.Add("14334")
+        'Bari.Facilities.Add("14362")
+        'Bari.Facilities.Add("14450")
+        ''Bari.Facilities.Add("14397")
+        ''Bari.Facilities.Add("14455")
+        'Bari.Facilities.Add("14487")
+        'Bari.Facilities.Add("14383")
+        'Bari.Facilities.Add("14354")
+        'Bari.Facilities.Add("14379")
+        'Bari.Facilities.Add("14373")
+        ''Bari.Facilities.Add("14375")
+        ''Bari.Facilities.Add("14480")
+        'Bari.Facilities.Add("14336")
+        'Bari.Facilities.Add("14377")
+        'Bari.Facilities.Add("14385")
+        'Bari.Facilities.Add("14499")
+        'Bari.Facilities.Add("14340")
+        'Bari.Facilities.Add("14419")
+        'Bari.Facilities.Add("14421")
+        ''Bari.Facilities.Add("14501")
+        'Bari.Facilities.Add("14367")
+        'Bari.Facilities.Add("14426")
+        'Bari.Facilities.Add("14381")
+        'Bari.Facilities.Add("14371")
+        'Bari.Facilities.Add("14463")
+        'Bari.Facilities.Add("14358")
 
 
         Dim BAT As New Province With {
+            .Name = "BAT",
             .CompanyCode = "C160113",
             .DeliveryType = "SSN"
         }
 
-        BAT.Facilities.Add("102278")
-        BAT.Facilities.Add("102264")
-        BAT.Facilities.Add("102244")
-        BAT.Facilities.Add("102246")
-        BAT.Facilities.Add("102242")
-        BAT.Facilities.Add("102277")
-        BAT.Facilities.Add("102304")
-        BAT.Facilities.Add("102292")
-        BAT.Facilities.Add("102287")
-        BAT.Facilities.Add("102238")
-        BAT.Facilities.Add("102208")
-        BAT.Facilities.Add("102240")
-        BAT.Facilities.Add("102268")
+        'BAT.Facilities.Add("102278")
+        'BAT.Facilities.Add("102264")
+        'BAT.Facilities.Add("102244")
+        'BAT.Facilities.Add("102246")
+        'BAT.Facilities.Add("102242")
+        'BAT.Facilities.Add("102277")
+        'BAT.Facilities.Add("102304")
+        'BAT.Facilities.Add("102292")
+        'BAT.Facilities.Add("102287")
+        'BAT.Facilities.Add("102238")
+        'BAT.Facilities.Add("102208")
+        'BAT.Facilities.Add("102240")
+        'BAT.Facilities.Add("102268")
 
 
         Dim Brindisi As New Province With {
+            .Name = "Brindisi",
             .CompanyCode = "C160106",
             .DeliveryType = "SSN"
         }
 
-        Brindisi.Facilities.Add("12538")
-        Brindisi.Facilities.Add("12559")
-        Brindisi.Facilities.Add("12577")
-        'Brindisi.Facilities.Add("12551")
-        Brindisi.Facilities.Add("12544")
-        Brindisi.Facilities.Add("12562")
-        Brindisi.Facilities.Add("12557")
-        Brindisi.Facilities.Add("12561")
-        Brindisi.Facilities.Add("12550")
-        Brindisi.Facilities.Add("12548")
-        Brindisi.Facilities.Add("12543")
-        Brindisi.Facilities.Add("12571")
-        'Brindisi.Facilities.Add("12495")
-        'Brindisi.Facilities.Add("12498")
-        Brindisi.Facilities.Add("12499")
-        'Brindisi.Facilities.Add("12496")
-        'Brindisi.Facilities.Add("12497")
+        'Brindisi.Facilities.Add("12538")
+        'Brindisi.Facilities.Add("12559")
+        'Brindisi.Facilities.Add("12577")
+        ''Brindisi.Facilities.Add("12551")
+        'Brindisi.Facilities.Add("12544")
+        'Brindisi.Facilities.Add("12562")
+        'Brindisi.Facilities.Add("12557")
+        'Brindisi.Facilities.Add("12561")
+        'Brindisi.Facilities.Add("12550")
+        'Brindisi.Facilities.Add("12548")
+        'Brindisi.Facilities.Add("12543")
+        'Brindisi.Facilities.Add("12571")
+        ''Brindisi.Facilities.Add("12495")
+        ''Brindisi.Facilities.Add("12498")
+        'Brindisi.Facilities.Add("12499")
+        ''Brindisi.Facilities.Add("12496")
+        ''Brindisi.Facilities.Add("12497")
 
 
         Dim Foggia As New Province With {
+            .Name = "Foggia",
             .CompanyCode = "C160115",
             .DeliveryType = "LP"
         }
 
-        Foggia.Facilities.Add("ASL22")
-        Foggia.Facilities.Add("ASL35")
-        Foggia.Facilities.Add("ASL37")
-        Foggia.Facilities.Add("ASL4")
-        Foggia.Facilities.Add("ASL17")
-        Foggia.Facilities.Add("ASL20")
-        Foggia.Facilities.Add("ASL10")
-        Foggia.Facilities.Add("ASL16")
-        Foggia.Facilities.Add("ASL5")
-        Foggia.Facilities.Add("ASL42")
-        Foggia.Facilities.Add("ASL41")
-        Foggia.Facilities.Add("ASL36")
-        Foggia.Facilities.Add("ASL45")
-        Foggia.Facilities.Add("ASL47")
-        Foggia.Facilities.Add("ASL25")
-        Foggia.Facilities.Add("ASL40")
-        Foggia.Facilities.Add("ASL32")
+        'Foggia.Facilities.Add("ASL22")
+        'Foggia.Facilities.Add("ASL35")
+        'Foggia.Facilities.Add("ASL37")
+        'Foggia.Facilities.Add("ASL4")
+        'Foggia.Facilities.Add("ASL17")
+        'Foggia.Facilities.Add("ASL20")
+        'Foggia.Facilities.Add("ASL10")
+        'Foggia.Facilities.Add("ASL16")
+        'Foggia.Facilities.Add("ASL5")
+        'Foggia.Facilities.Add("ASL42")
+        'Foggia.Facilities.Add("ASL41")
+        'Foggia.Facilities.Add("ASL36")
+        'Foggia.Facilities.Add("ASL45")
+        'Foggia.Facilities.Add("ASL47")
+        'Foggia.Facilities.Add("ASL25")
+        'Foggia.Facilities.Add("ASL40")
+        'Foggia.Facilities.Add("ASL32")
 
 
         Dim Lecce As New Province With {
+            .Name = "Lecce",
             .CompanyCode = "C160116",
             .DeliveryType = "SSN"
         }
 
-        Lecce.Facilities.Add("400200")
-        Lecce.Facilities.Add("900503")
-        Lecce.Facilities.Add("900603")
-        Lecce.Facilities.Add("900201")
-        Lecce.Facilities.Add("900903")
-        Lecce.Facilities.Add("300400")
-        Lecce.Facilities.Add("900203")
-        Lecce.Facilities.Add("700700")
-        Lecce.Facilities.Add("800200")
-        Lecce.Facilities.Add("900403")
+        'Lecce.Facilities.Add("400200")
+        'Lecce.Facilities.Add("900503")
+        'Lecce.Facilities.Add("900603")
+        'Lecce.Facilities.Add("900201")
+        'Lecce.Facilities.Add("900903")
+        'Lecce.Facilities.Add("300400")
+        'Lecce.Facilities.Add("900203")
+        'Lecce.Facilities.Add("700700")
+        'Lecce.Facilities.Add("800200")
+        'Lecce.Facilities.Add("900403")
 
 
         Dim Taranto As New Province With {
+            .Name = "Taranto",
             .CompanyCode = "C160112",
             .DeliveryType = "SSN"
         }
 
-        Taranto.Facilities.Add("12227")
-        Taranto.Facilities.Add("12228")
-        Taranto.Facilities.Add("12229")
-        Taranto.Facilities.Add("12226")
-        Taranto.Facilities.Add("12225")
-        'Taranto.Facilities.Add("12231")
-        Taranto.Facilities.Add("12250")
-        Taranto.Facilities.Add("12230")
-        Taranto.Facilities.Add("12233")
+        'Taranto.Facilities.Add("12227")
+        'Taranto.Facilities.Add("12228")
+        'Taranto.Facilities.Add("12229")
+        'Taranto.Facilities.Add("12226")
+        'Taranto.Facilities.Add("12225")
+        ''Taranto.Facilities.Add("12231")
+        'Taranto.Facilities.Add("12250")
+        'Taranto.Facilities.Add("12230")
+        'Taranto.Facilities.Add("12233")
 
         Provinces.Add(Bari)
         Provinces.Add(BAT)
@@ -171,6 +177,19 @@ Public Class MainForm
         AppointmentsList.ListViewItemSorter = New ListComparator
         EndDate.MaxDate = Date.Now
 
+        Dim thread As New Thread(AddressOf UpdateFacilityList) With {
+            .IsBackground = True
+        }
+
+        Dim dialog As New ProgressDialog
+        thread.Start(dialog)
+
+        If dialog.ShowDialog() <> DialogResult.OK Then Application.Exit()
+
+    End Sub
+
+    Private Sub Dose3_CheckedChanged(sender As Object, e As EventArgs) Handles Dose3.CheckedChanged
+        EndDate.Enabled = Dose3.Checked
     End Sub
 
     Private Sub CB_CheckedChanged(sender As Object, e As EventArgs) Handles CBBari.CheckedChanged, CBBAT.CheckedChanged, CBBrindisi.CheckedChanged, CBFoggia.CheckedChanged, CBLecce.CheckedChanged, CBTaranto.CheckedChanged
@@ -322,10 +341,10 @@ Public Class MainForm
             response.Dispose()
 
             data = JObject.Parse(content)
-            MsgBox(data.ToString)
+            MsgBox("Prenotazione completata con successo" + vbCrLf + vbCrLf + data.ToString)
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MsgBox("Errore durante la prenotazione dell'appuntamento" + vbCrLf + vbCrLf + ex.ToString)
         End Try
 
         Reserve.Enabled = True
@@ -334,7 +353,7 @@ Public Class MainForm
 
     Private Sub Download_Click(sender As Object, e As EventArgs) Handles Download.Click
 
-        Dim downloadDialog = New DownloadDialog(FiscalCode.Text, HealthCardID.Text)
+        Dim downloadDialog = New DownloadDialog(Provinces.Select(Function(prov) prov.ToString), FiscalCode.Text, HealthCardID.Text)
         If downloadDialog.ShowDialog() = DialogResult.OK Then
 
             Dim dialog As New SaveFileDialog With {
@@ -393,12 +412,58 @@ Public Class MainForm
                     MsgBox("Salvataggio completato")
 
                 Catch ex As Exception
-                    MsgBox(ex.Message)
+                    MsgBox("Errore durante il download del promemoria" + vbCrLf + vbCrLf + ex.ToString)
                 End Try
 
             End If
 
         End If
+
+    End Sub
+
+    Private Sub UpdateFacilityList(dialog As ProgressDialog)
+
+        Try
+
+            Dim request As HttpWebRequest = WebRequest.Create("https://raw.githubusercontent.com/ElDavoo/PrenotazioneVaccino/mainjs/main.js")
+
+            request.Accept = "application/json"
+            request.Method = "GET"
+            request.Timeout = 1 * 60 * 1000
+
+            Dim response As HttpWebResponse = request.GetResponse
+            Dim responseStream As Stream = response.GetResponseStream
+            Dim reader As New StreamReader(responseStream)
+            Dim content As String = reader.ReadToEnd
+
+            reader.Close()
+            reader.Dispose()
+
+            responseStream.Close()
+            responseStream.Dispose()
+
+            response.Close()
+            response.Dispose()
+
+            For Each match As Match In Regex.Matches(content, "^asl([a-zA-Z]+).+'([A-Z0-9]+)', ?'(.+)'", RegexOptions.Multiline)
+
+                Dim province As String = match.Groups(1).Value
+                Dim id As String = match.Groups(2).Value
+                Dim name As String = match.Groups(3).Value.Replace("\", "")
+
+                For Each prov In Provinces
+                    If prov.Name.ToLower = province.ToLower Then prov.Facilities.Add(id)
+                Next
+
+            Next
+
+            dialog.DialogResult = DialogResult.OK
+
+        Catch ex As Exception
+            MsgBox("Errore durante l'aggiornamento dell'elenco degli Hub" + vbCrLf + vbCrLf + ex.ToString)
+        End Try
+
+        dialog.Close()
 
     End Sub
 
@@ -503,10 +568,15 @@ Public Class MainForm
 
     Private Class Province
 
+        Public Property Name As String
         Public Property CompanyCode As String
         Public Property DeliveryType As String
         Public Property Facilities As New List(Of String)
         Public Property Enabled As Boolean = False
+
+        Public Overrides Function ToString() As String
+            Return Name
+        End Function
 
     End Class
 
@@ -534,9 +604,5 @@ Public Class MainForm
         End Function
 
     End Class
-
-    Private Sub Dose3_CheckedChanged(sender As Object, e As EventArgs) Handles Dose3.CheckedChanged
-        EndDate.Enabled = Dose3.Checked
-    End Sub
 
 End Class

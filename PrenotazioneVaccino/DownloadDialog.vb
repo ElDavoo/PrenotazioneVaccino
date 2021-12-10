@@ -1,9 +1,10 @@
 ﻿Public Class DownloadDialog
 
-    Sub New(fiscalCode As String, healthCardID As String)
+    Sub New(provinces As String(), fiscalCode As String, healthCardID As String)
 
         InitializeComponent()
 
+        ProvinceCombo.Items.AddRange(provinces)
         FiscalCodeText.Text = fiscalCode
         HealthCardIDText.Text = healthCardID
 

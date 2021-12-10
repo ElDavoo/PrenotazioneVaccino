@@ -51,7 +51,6 @@ Partial Class DownloadDialog
         Me.ProvinceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ProvinceCombo.Font = New System.Drawing.Font("Consolas", 8.25!)
         Me.ProvinceCombo.FormattingEnabled = True
-        Me.ProvinceCombo.Items.AddRange(New Object() {"Bari", "BAT", "Brindisi", "Foggia", "Lecce", "Taranto"})
         Me.ProvinceCombo.Location = New System.Drawing.Point(122, 55)
         Me.ProvinceCombo.Margin = New System.Windows.Forms.Padding(2)
         Me.ProvinceCombo.Name = "ProvinceCombo"
