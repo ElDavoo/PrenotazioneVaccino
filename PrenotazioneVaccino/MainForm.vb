@@ -353,7 +353,7 @@ Public Class MainForm
 
     Private Sub Download_Click(sender As Object, e As EventArgs) Handles Download.Click
 
-        Dim downloadDialog = New DownloadDialog(Provinces.Select(Function(prov) prov.ToString), FiscalCode.Text, HealthCardID.Text)
+        Dim downloadDialog = New DownloadDialog(Provinces.Select(Function(prov) prov.ToString).ToArray, FiscalCode.Text, HealthCardID.Text)
         If downloadDialog.ShowDialog() = DialogResult.OK Then
 
             Dim dialog As New SaveFileDialog With {
