@@ -44,7 +44,6 @@ Partial Class ProgressDialog
         Me.MinimizeBox = False
         Me.Name = "ProgressDialog"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Aggiornamento elenco Hub"
         Me.ResumeLayout(False)
 
     End Sub

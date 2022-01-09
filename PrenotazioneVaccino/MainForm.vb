@@ -7,7 +7,7 @@ Imports Newtonsoft.Json.Linq
 
 Public Class MainForm
 
-    Private Shared Provinces As New List(Of Province)
+    Private Shared ReadOnly Provinces As New List(Of Province)
 
     Shared Sub New()
 
@@ -181,7 +181,7 @@ Public Class MainForm
             .IsBackground = True
         }
 
-        Dim dialog As New ProgressDialog
+        Dim dialog As New ProgressDialog("Aggiornamento elenco Hub")
         thread.Start(dialog)
 
         If dialog.ShowDialog() <> DialogResult.OK Then Application.Exit()
@@ -341,10 +341,30 @@ Public Class MainForm
             response.Dispose()
 
             data = JObject.Parse(content)
-            MsgBox("Prenotazione completata con successo" + vbCrLf + vbCrLf + data.ToString)
+
+            Dim extendedMessage As String = data.ToString
+            Dim message As String = "Prenotazione completata con successo"
+
+            Dim outcome As JObject = data.Value(Of JObject)("outcome")
+
+            If outcome Is Nothing OrElse outcome.Value(Of String)("code") = "KO" Then
+                message = "Errore durante la prenotazione dell'appuntamento"
+            Else
+
+                Dim number As String = data.Value(Of String)("number")
+                number = number.Substring(0, 4) + number.Substring(10)
+
+                message += vbCrLf + "Codice prenotazione: " + number + " (copiato negli appunti)"
+                Clipboard.SetText(number)
+
+            End If
+
+            Dim box As New ResultBox("Risultato", message, extendedMessage)
+            box.ShowDialog()
 
         Catch ex As Exception
-            MsgBox("Errore durante la prenotazione dell'appuntamento" + vbCrLf + vbCrLf + ex.ToString)
+            Dim box As New ResultBox("Risultato", "Errore durante la prenotazione dell'appuntamento", ex.ToString)
+            box.ShowDialog()
         End Try
 
         Reserve.Enabled = True
@@ -365,24 +385,24 @@ Public Class MainForm
                 Dim reservationID As String = downloadDialog.ReservationID
                 Dim province As Province = Provinces(downloadDialog.Province)
 
-                Dim url As String = "https://www.sanita.puglia.it/sanita-api/covid19/reservation/"
-                url += reservationID.Substring(0, 4)
-                url += province.CompanyCode.Substring(1)
-                url += reservationID.Substring(4)
-                url += "/patient/"
-                url += downloadDialog.FiscalCode
-                url += "/company/"
-                url += province.CompanyCode
-                url += "/download-reminder?platform=WEB&functionality=GESTIONE_PRENOTAZIONI&accessMode=ANONIMO&healthInsuranceCard="
-                url += downloadDialog.HealthCardID
-
-                Dim request As HttpWebRequest = WebRequest.Create(url)
-
-                request.Accept = "application/json"
-                request.Method = "GET"
-                request.Timeout = 1 * 60 * 1000
-
                 Try
+
+                    Dim url As String = "https://www.sanita.puglia.it/sanita-api/covid19/reservation/"
+                    url += reservationID.Substring(0, 4)
+                    url += province.CompanyCode.Substring(1)
+                    url += reservationID.Substring(4)
+                    url += "/patient/"
+                    url += downloadDialog.FiscalCode
+                    url += "/company/"
+                    url += province.CompanyCode
+                    url += "/download-reminder?platform=WEB&functionality=GESTIONE_PRENOTAZIONI&accessMode=ANONIMO&healthInsuranceCard="
+                    url += downloadDialog.HealthCardID
+
+                    Dim request As HttpWebRequest = WebRequest.Create(url)
+
+                    request.Accept = "application/json"
+                    request.Method = "GET"
+                    request.Timeout = 1 * 60 * 1000
 
                     Dim response As HttpWebResponse = request.GetResponse
                     Dim responseStream As Stream = response.GetResponseStream
@@ -409,10 +429,11 @@ Public Class MainForm
                     stream.Close()
                     stream.Dispose()
 
-                    MsgBox("Salvataggio completato")
+                    MsgBox("Salvataggio completato", MsgBoxStyle.ApplicationModal, "Risultato")
 
                 Catch ex As Exception
-                    MsgBox("Errore durante il download del promemoria" + vbCrLf + vbCrLf + ex.ToString)
+                    Dim box As New ResultBox("Risultato", "Errore durante il download del promemoria", ex.ToString)
+                    box.ShowDialog()
                 End Try
 
             End If
@@ -452,7 +473,9 @@ Public Class MainForm
                 Dim name As String = match.Groups(3).Value.Replace("\", "")
 
                 For Each prov In Provinces
-                    If prov.Name.ToLower = province.ToLower Then prov.Facilities.Add(id)
+                    If prov.Name.ToLower = province.ToLower Then
+                        If Not prov.Facilities.Contains(id) Then prov.Facilities.Add(id)
+                    End If
                 Next
 
             Next
@@ -460,7 +483,8 @@ Public Class MainForm
             dialog.DialogResult = DialogResult.OK
 
         Catch ex As Exception
-            MsgBox("Errore durante l'aggiornamento dell'elenco degli Hub" + vbCrLf + vbCrLf + ex.ToString)
+            Dim box As New ResultBox("Errore", "Errore durante l'aggiornamento dell'elenco degli Hub", ex.ToString)
+            box.ShowDialog()
         End Try
 
         dialog.Close()

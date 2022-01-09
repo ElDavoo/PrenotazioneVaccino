@@ -1,6 +1,6 @@
 ﻿Public Class DownloadDialog
 
-    Sub New(provinces As String(), fiscalCode As String, healthCardID As String)
+    Public Sub New(provinces As String(), fiscalCode As String, healthCardID As String)
 
         InitializeComponent()
 
