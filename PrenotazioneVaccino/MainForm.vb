@@ -230,7 +230,7 @@ Public Class MainForm
         Dim searchDate = Date.Now
         If Dose3.Checked Then
 
-            searchDate = EndDate.Value.AddDays(150)
+            searchDate = EndDate.Value.AddDays(120)
             If searchDate < Date.Now Then
                 searchDate = Date.Now
             End If
